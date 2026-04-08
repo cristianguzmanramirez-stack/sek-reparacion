@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)file:///C:/Users/crist/Downloads/sek_reparacion.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>INMEGA FlowCore – Registro de Reparación</title>
+  <link href="./index_files/css2" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue-dark:  #1e3a5f;
+      --blue-mid:   #2563eb;
+      --blue-light: #dbeafe;
+      --blue-lt2:   #93c5fd;
+      --blue-acc:   #1d4ed8;
+      --cream:      #f0f4ff;
+      --white:      #ffffff;
+      --gray:       #64748b;
+      --light:      #cbd5e1;
+      --danger:     #dc2626;
+      --radius:     10px;
+    }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 48px;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      width: 100%; max-width: 560px;
+      background: var(--white);
+      border-radius: var(--radius) var(--radius) 0 0;
+      padding: 20px 32px 0;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .header img { height: 80px; object-fit: contain; margin-bottom: 12px; }
+    .header-banner {
+      width: calc(100% + 64px);
+      background: var(--blue-dark);
+      padding: 14px 32px 16px;
+      text-align: center;
+      margin-top: 16px;
+      position: relative;
+    }
+    .header-banner::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--blue-lt2), transparent);
+    }
+    .header-title {
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--white);
+      font-size: 1.3rem; font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+    .header-sub {
+      color: var(--blue-lt2);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      width: 100%; max-width: 560px;
+      background: var(--white);
+      border-radius: 0 0 var(--radius) var(--radius);
+      padding: 28px 32px 36px;
+      box-shadow: 0 8px 32px rgba(30,58,95,0.12);
+    }
+    .blue-bar { display: block; width: 40px; height: 2px; background: var(--blue-mid); margin: 0 auto 18px; border-radius: 2px; }
+
+    /* ── TICKET INFO ── */
+    .ticket-info {
+      background: var(--blue-light);
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 24px;
+    }
+    .ticket-info strong {
+      display: block; font-size: 0.7rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--blue-acc); margin-bottom: 3px;
+    }
+    .ticket-id {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-weight: 700;
+      color: var(--blue-dark);
+    }
+
+    /* ── FIELDS ── */
+    .field { margin-bottom: 20px; }
+    label {
+      display: block; font-size: 0.78rem; font-weight: 600;
+      color: var(--blue-dark); letter-spacing: 0.06em;
+      text-transform: uppercase; margin-bottom: 7px;
+    }
+    label .req { color: var(--blue-mid); margin-left: 2px; }
+    textarea {
+      width: 100%; border: 1.5px solid var(--light);
+      border-radius: 7px; padding: 11px 14px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.93rem;
+      color: var(--blue-dark); background: var(--cream);
+      outline: none; resize: vertical; min-height: 100px;
+      transition: border-color 0.2s;
+    }
+    textarea:focus { border-color: var(--blue-mid); background: var(--white); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+
+    /* ── FOTOS ── */
+    .foto-drop {
+      border: 2px dashed var(--light);
+      border-radius: 8px; padding: 20px;
+      text-align: center; cursor: pointer;
+      background: var(--cream);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .foto-drop:hover { border-color: var(--blue-mid); background: #eff6ff; }
+    .foto-drop input { display: none; }
+    .foto-drop-icon { font-size: 2rem; margin-bottom: 6px; }
+    .foto-drop-label { font-size: 0.82rem; color: var(--gray); }
+    .foto-drop-label span { color: var(--blue-mid); font-weight: 600; }
+    .foto-count { font-size: 0.75rem; color: var(--blue-mid); font-weight: 600; margin-top: 6px; }
+    .fotos-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 14px; }
+    .foto-thumb { position: relative; border-radius: 6px; overflow: hidden; aspect-ratio: 1; }
+    .foto-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .foto-thumb-del {
+      position: absolute; top: 4px; right: 4px;
+      background: var(--danger); color: #fff;
+      border: none; border-radius: 50%;
+      width: 22px; height: 22px; font-size: 0.75rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .btn-add-more {
+      width: 100%; margin-top: 10px; padding: 9px;
+      background: transparent; border: 1.5px dashed var(--blue-mid);
+      color: var(--blue-mid); border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+      font-weight: 600; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-add-more:hover { background: #eff6ff; }
+
+    /* ── BOTÓN SUBMIT ── */
+    .btn-submit {
+      width: 100%; padding: 14px;
+      background: var(--blue-dark);
+      color: #ffffff !important;
+      border: none; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.93rem; font-weight: 600;
+      cursor: pointer; display: flex;
+      align-items: center; justify-content: center; gap: 8px;
+      margin-top: 8px; transition: background 0.2s, transform 0.15s;
+    }
+    .btn-submit:hover { background: var(--blue-acc); transform: translateY(-1px); }
+    .btn-submit:active { transform: translateY(0); }
+    .btn-submit:disabled { background: #94a3b8; cursor: not-allowed; transform: none; }
+    .spinner { display: none; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── VALIDACIÓN ── */
+    .has-error textarea { border-color: var(--danger); }
+    .error-msg { font-size: 0.75rem; color: var(--danger); margin-top: 5px; display: none; }
+    .has-error .error-msg { display: block; }
+
+    /* ── ÉXITO ── */
+    .success-screen {
+      display: none; flex-direction: column;
+      align-items: center; gap: 16px;
+      padding: 24px 0 8px; text-align: center;
+    }
+    .success-icon { font-size: 3rem; }
+    .success-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 700;
+      color: var(--blue-dark);
+    }
+    .success-sub { font-size: 0.88rem; color: var(--gray); line-height: 1.5; max-width: 320px; }
+
+    @media (max-width: 480px) {
+      .card { padding: 20px 16px 28px; }
+      .header { padding: 16px 20px 0; }
+      .fotos-grid { grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <img src="data:image/jpeg;base64,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" alt="INMEGA FlowCore">
+  <div class="header-banner">
+    <div class="header-sub">Prov 16:3</div>
+    <div class="header-title">INMEGA FlowCore</div>
+  </div>
+</div>
+
+<div class="card">
+  <form id="form" novalidate="">
+    <span class="blue-bar"></span>
+
+    <div class="ticket-info">
+      <strong>N° de Ticket asignado</strong>
+      <span class="ticket-id" id="ticket-display">No especificado</span>
+    </div>
+
+    <div class="field" id="wrap-comentario">
+      <label>Comentario de reparación <span class="req">*</span></label>
+      <textarea id="comentario" placeholder="Describe qué se reparó, materiales usados, observaciones..."></textarea>
+      <div class="error-msg">Por favor describe la reparación realizada.</div>
+    </div>
+
+    <div class="field">
+      <label>Fotografías de la reparación <span style="font-weight:400;color:var(--gray)">(puedes agregar varias)</span></label>
+      <div class="foto-drop" onclick="document.getElementById(&#39;foto-input&#39;).click()">
+        <input type="file" id="foto-input" accept="image/*" capture="environment" multiple="">
+        <div class="foto-drop-icon">📸</div>
+        <div class="foto-drop-label">Toca para <span>tomar o elegir fotos</span></div>
+        <div class="foto-count" id="foto-count"></div>
+      </div>
+      <div class="fotos-grid" id="fotos-grid"></div>
+      <button type="button" class="btn-add-more" id="btn-add-more" style="display:none;" onclick="document.getElementById(&#39;foto-input-extra&#39;).click()">
+        + Agregar más fotos
+      </button>
+      <input type="file" id="foto-input-extra" accept="image/*" capture="environment" multiple="" style="display:none;">
+    </div>
+
+    <button type="submit" class="btn-submit" id="btn-enviar">
+      <span id="btn-text" style="color:#ffffff;">Registrar Reparación</span>
+      <div class="spinner" id="spinner"></div>
+    </button>
+  </form>
+
+  <div class="success-screen" id="success-screen">
+    <div class="success-icon">✅</div>
+    <div class="success-title">¡Reparación registrada!</div>
+    <div class="success-sub">La reparación fue registrada exitosamente. El supervisor revisará y cerrará el ticket.</div>
+  </div>
+</div>
+
+<script>
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx4IOQKBBSzIsl5SRBiwtdPmOy48M_8eSMxSe2eAsm2zSAqWRrh0jENf4vOj3YfNYYiug/exec";
+  const urlParams = new URLSearchParams(window.location.search);
+  const ticketId  = urlParams.get('ticket') || '';
+  document.getElementById('ticket-display').textContent = ticketId || 'No especificado';
+
+  let fotosArray = [];
+
+  function actualizarGrid() {
+    const grid    = document.getElementById('fotos-grid');
+    const count   = document.getElementById('foto-count');
+    const btnMore = document.getElementById('btn-add-more');
+    count.textContent   = fotosArray.length > 0 ? `${fotosArray.length} foto(s) seleccionada(s)` : '';
+    btnMore.style.display = fotosArray.length > 0 ? 'block' : 'none';
+    grid.innerHTML = fotosArray.map((f, i) => `
+      <div class="foto-thumb">
+        <img src="${f.base64}" alt="Foto ${i+1}">
+        <button type="button" class="foto-thumb-del" onclick="eliminarFoto(${i})">✕</button>
+      </div>
+    `).join('');
+  }
+
+  function eliminarFoto(idx) {
+    fotosArray.splice(idx, 1);
+    actualizarGrid();
+  }
+
+  async function procesarArchivos(files) {
+    for (const file of files) {
+      const base64 = await new Promise(resolve => {
+        const r = new FileReader();
+        r.onload = e => resolve(e.target.result);
+        r.readAsDataURL(file);
+      });
+      fotosArray.push({ base64, nombre: file.name });
+    }
+    actualizarGrid();
+  }
+
+  document.getElementById('foto-input').addEventListener('change', function() {
+    procesarArchivos(Array.from(this.files));
+    this.value = '';
+  });
+  document.getElementById('foto-input-extra').addEventListener('change', function() {
+    procesarArchivos(Array.from(this.files));
+    this.value = '';
+  });
+
+  document.getElementById('form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const comentario = document.getElementById('comentario').value.trim();
+    const wrapCom    = document.getElementById('wrap-comentario');
+    if (!comentario) { wrapCom.classList.add('has-error'); return; }
+    wrapCom.classList.remove('has-error');
+
+    const btn     = document.getElementById('btn-enviar');
+    const spinner = document.getElementById('spinner');
+    const btnText = document.getElementById('btn-text');
+    btn.disabled          = true;
+    spinner.style.display = 'block';
+    btnText.textContent   = 'Enviando...';
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method:  'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({
+          action:     'registrarReparacion',
+          ticket:     ticketId,
+          comentario,
+          fotos:      fotosArray.map(f => ({ base64: f.base64, nombre: f.nombre })),
+        }),
+      });
+    } catch(err) { console.log('Enviado:', err); }
+
+    document.getElementById('form').style.display = 'none';
+    document.getElementById('success-screen').style.display = 'flex';
+  });
+</script>
+
+</body></html>
